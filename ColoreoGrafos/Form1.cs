@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -115,13 +116,21 @@ namespace ColoreoGrafos
             for (int i = 1; i < cantColores+1; i++) {
                 colors.Add(Color.FromArgb(255,(( i * 100 ) % 256), ((i * 50) % 256), ((i * 150) % 256)));
             }
+            foreach (Nodo node in grafo.Vertices)
+            {
+                node.color = Color.White;
+            }
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             bool coloreado = graphColoringUtil(colors, 0);
+            stopwatch.Stop();
+            label8.Text = "Tiempo de ejecucion (ms) : " + TimeSpan.FromTicks(stopwatch.ElapsedTicks).TotalMilliseconds.ToString("0.00000");
             if (coloreado)
             {
                 MessageBox.Show("Se logró colorear el grafo con " + colors.Count + " colores diferentes", "Éxito", MessageBoxButtons.OK);
             }
             else {
-                MessageBox.Show("No Se logró colorear el grafo con " + colors.Count + " colores diferentes", "Fracaso", MessageBoxButtons.OK);
+                MessageBox.Show("No se logró colorear el grafo con " + colors.Count + " colores diferentes", "Fracaso", MessageBoxButtons.OK);
                 foreach(Nodo node in grafo.Vertices) {
                     node.color = Color.White;
                 }
